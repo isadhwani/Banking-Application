@@ -1,6 +1,8 @@
 package dev.codescreen.models.responses;
 
 
+//import dev.codescreen.models.TransactionAmount;
+
 import dev.codescreen.models.enums.ResponseCode;
 
 public class AuthorizationResponse {
@@ -8,11 +10,11 @@ public class AuthorizationResponse {
     public AuthorizationResponse() {
 
     }
-    public AuthorizationResponse(String userId, String messageId, ResponseCode responseCode, TransactionAmount balance) {
+    public AuthorizationResponse(String userId, String messageId, ResponseCode responseCode) {//, Amount balance) {
         this.userId = userId;
         this.messageId = messageId;
         this.responseCode = responseCode;
-        this.balance = balance;
+        //this.balance = balance;
     }
 
     public void setUserId(String userId) {
@@ -27,9 +29,9 @@ public class AuthorizationResponse {
         this.responseCode = responseCode;
     }
 
-    public void setBalance(TransactionAmount balance) {
-        this.balance = balance;
-    }
+//    public void setBalance(Amount balance) {
+//        this.balance = balance;
+//    }
 
     public String getUserId() {
         return userId;
@@ -43,9 +45,9 @@ public class AuthorizationResponse {
         return responseCode;
     }
 
-    public TransactionAmount getBalance() {
-        return new TransactionAmount(balance.getAmount(), balance.getCurrency(), balance.getDebitOrCredit());
-    }
+//    public Amount getBalance() {
+//        return new Amount(balance.getAmount(), balance.getCurrency(), balance.getDebitOrCredit());
+//    }
 
     private String userId;
 
@@ -53,11 +55,11 @@ public class AuthorizationResponse {
 
     private ResponseCode responseCode;
 
-    private TransactionAmount balance;
+    //private Amount balance;
 
     @Override
     public String toString() {
-        return "AuthorizationResponse{" + "userId='" + userId + '\'' + ", messageId='" + messageId + '\'' + ", responseCode=" + responseCode + ", balance=" + balance + '}';
+        return "AuthorizationResponse{" + "userId='" + userId + '\'' + ", messageId='" + messageId + '\'' + ", responseCode=" + responseCode;// + ", balance=" + balance + '}';
     }
 
 }

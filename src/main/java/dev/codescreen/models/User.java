@@ -17,7 +17,7 @@ public class User {
     private float balance;
 
     public User() {
-        // dp some stuff
+        // do some stuff
     }
 
     public String getId() {

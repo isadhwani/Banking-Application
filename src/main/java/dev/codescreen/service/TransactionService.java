@@ -1,6 +1,5 @@
 package dev.codescreen.service;
 
-import dev.codescreen.models.Transaction;
 import dev.codescreen.models.User;
 import dev.codescreen.models.enums.ResponseCode;
 import dev.codescreen.models.repositories.UserRepository;
@@ -21,9 +20,9 @@ public class TransactionService {
 
 
     public AuthorizationResponse authorizeTransaction(AuthorizationRequest req) {
-        int creditAmount;
+        int creditAmount = 0;
         try {
-            creditAmount = Integer.parseInt(req.getTransactionAmount().getAmount());
+            //creditAmount = Integer.parseInt(req.getAmount().getAmount());
 
         } catch (NumberFormatException e) {
             // return no such user error
@@ -36,14 +35,14 @@ public class TransactionService {
         // throw new UserNotFoundException("User not found") ;//no such transaction error code...
         // Instead of throwing an error, I'll create a new user with this ID as the API spec does not have an add user endpoint
 
-        Transaction transaction = new Transaction(req.getMessageId(), req.getUserId(), req.getTransactionAmount());
+ //       Transaction transaction = new Transaction(req.getMessageId(), req.getUserId(), req.getTransactionAmount());
 //        transactionRepository.save(transaction);
 
         if (user.canCredit(creditAmount)) {
             user.credit(creditAmount);
-            return new AuthorizationResponse(req.getUserId(), req.getMessageId(), ResponseCode.APPOROVED, req.getTransactionAmount());
+            return new AuthorizationResponse(req.getUserId(), req.getMessageId(), ResponseCode.APPOROVED);//, req.getAmount());
         }
-        return new AuthorizationResponse(req.getUserId(), req.getMessageId(), ResponseCode.DECLINDED, req.getTransactionAmount());
+        return new AuthorizationResponse(req.getUserId(), req.getMessageId(), ResponseCode.DECLINDED);//, req.getAmount());
     }
 
 //
