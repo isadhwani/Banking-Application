@@ -43,19 +43,19 @@ Here’s a breakdown of the key criteria we’ll be considering when grading you
 
 # Candidate README
 
-This application is a simple banking API that allows users to debit and credit from their account. Users are created by sending either request with a specified user ID. 
+This application is a simple banking API that allows users to debit and credit from their accounts. Users are created by sending either request with a specified user ID. 
 
 I've built this API spec using SpringBoot framework and Maven. The application begins in `BankingAplication.java` and it will scan for the `TransactionController`. The controller creates the three desired endpoints and delegates their functionality to the `TransactionService.java` file.    
 
-The `TransactionService` has `EventProcessor` and `UserRepository` objects. The `UserRepository` object is an in memory database containing all users and necessary methods. The `EventProcessor` object delegates transaction execution to `DebitEvent` and `CreditEvent` objects respectively. These objects are responsible for updating the user's balance. Before processing, each event is added to the EventProcessor's list. 
+The `TransactionService` has `EventProcessor` and `UserRepository` objects. The `UserRepository` object is an in-memory database containing all users and necessary methods. The `EventProcessor` object delegates transaction execution to the `DebitEvent` and `CreditEvent` objects respectively. These objects are responsible for updating the user's balance. Before processing, each event is added to the EventProcessor's list. 
 
 All enums, request, response, and repository models are located in the `models` package.
 
-All tests are in the `test` package. The `TestTransactionService` tests the functionality of the `TransactionService` class. The `TestEventLog` tests the functionality of the `EventProcessor` class.
+All tests are in the `test` package. The `TestTransactionService` tests the functionality of the `TransactionService` class. The `TestEventLog` tests the functionality of the `EventProcessor` class. The `TestUserRepository` class tests the UserRepository and all necessary methods. If I had more time, I'd add tests for every method and class in the program to ensure 100% unit test coverage. 
 
-While there is no endpoint specified for logging events in the EventProcessor, you can investigate it through the tests written in `TestEventLog.java`.
+While there is no endpoint specified for showing events logged in the EventProcessor, you can investigate it through the tests written in `TestEventLog.java`.  This test class creates multiple transactions and ensures that they are correctly added to the EventProcessor's log. 
 
-The event processor logs all Credit and Debit events, regardless of weather or not they were sucessful. Debit and Credit events have their response code (approved or denied), weather or not it was a debit or a credit, the amount, and a copy of the target user. Storing this information allows for easy reversal of transactions by fetching the user and reversing the debit or credit event if it was approved. 
+The `EventProcessor` logs all `Credit` and `Debit` events, regardless of if they were successful. Debit and Credit events have their response code (approved or denied), weather or not it was a debit or a credit, the amount, and a copy of the target user. Storing this information allows for easy reversal of transactions by fetching the user and reversing the debit or credit event if it was approved. 
 
 ## Bootstrap instructions
 Clone the repo and run it locally with the following maven commands. Ensure you are in the root of the directory before running.   
@@ -65,6 +65,8 @@ Clone the repo and run it locally with the following maven commands. Ensure you 
 `mvn install`
 
 `mvn exec:java -Dexec.mainClass=dev.codescreen.BankingApplication`
+
+Alternativley, you could open the project in IntelliJ and have the IDE install maven dependencies for you. You can open the `BankingApplication.java`  file and click the run button. 
 ## Design considerations
 This service functions as a simple banking application, allowing users to debit and credit funds from their account. All funds are handled in USD and users cannot have balances below 0.  
 
@@ -72,18 +74,17 @@ I found a couple issues in the described assignment while I was implementing.
 
 First, the API spec gives no ability to create a user. I've designed to service to create a user if there is not one of the specified ID. 
 
-Second, each load and authorization request takes in a message ID. While I understand the need to make messages unique, the end user should not have to come up with their own unique message ID. I choose not to restrict the user from reusing message IDs, and would generate a new message ID for each response. While the example request and response shows a response message returning the same message ID as the request, I believe this is a poor design choice. If this was the desired functionality, I feel the field should be renamed. Because of this issue, I did not implement an logging service to keep track of every user request and response. While this would be useful for assesing the quality and speed of responses, not having messages be unique would create a problem and make this impractical. 
+Second, each load and authorization request takes in a message ID. While I understand the need to make messages unique, the end user should not have to come up with their own unique message ID. I choose not to restrict the user from reusing message IDs, and would generate a new message ID for each response. While the example request and response shows a response message returning the same message ID as the request, I believe this is a poor design choice. If this was the desired functionality, I feel the field should be renamed. Because of this issue, I did not implement an logging service to keep track of every user request and response. While this would be useful for assesing the quality and speed of responses, not having messages be unique would make this impractical. 
 
 Third, the API spec does not specify how to handle a user trying to credit more money than they have. I have chosen to return a 400 error in this case.
 
-Fourth, the API spec does not specify how to handle a user trying to credit or debit a negative amount of money. I have chosen to create a custom error handling service that gives a 400 error code. 
+Fourth, the API spec does not specify how to handle a user trying to credit or debit a negative amount. I have chosen to create a custom error handling service that gives a 400 error code. 
 
-Finally, should Transactions that were denied be added to the `EventLog`? While this isn't specified, I decided to add all requests, regardless of if they were approved, to the log. 
 ## Assumptions
 I have assumed the program will be ran and tested locally. I have not implemented any CORs logic and expect requests to come from the same origin. There is also no security implemented in this service. 
 
 ## Bonus: Deployment considerations
-To quickly make my API available to authorized users, I would host it on AWS. 
+To quickly make my API available to authorized users, I would host it on AWS. I would also use an AWS hosted PostGreSQL database rather than an in memory database.
 
 I would deploy the aplication using AWS Elastic Beanstalk, which simplifies the provisioning and management of the infrastructure. I would create an Elastic Beanstalk environment configured with the appropriate runtime environment for Java, upload the applications JAR file, and let Elastic Beanstalk handle the deployment and scaling of the application.
 
