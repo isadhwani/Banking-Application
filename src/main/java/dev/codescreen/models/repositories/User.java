@@ -3,6 +3,9 @@ package dev.codescreen.models.repositories;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+/**
+ * A class that represents a user in the system. Used in the in memory database UserRepository.
+ */
 @Entity
 public class User {
 
@@ -23,6 +26,10 @@ public class User {
     public User(User u) {
         this.id = u.id;
         this.balance = u.balance;
+    }
+
+    public User() {
+
     }
 
     public String getId() {

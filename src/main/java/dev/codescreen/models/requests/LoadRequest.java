@@ -3,20 +3,11 @@ package dev.codescreen.models.requests;
 
 import dev.codescreen.models.responses.Amount;
 
+/**
+ * A class that represents a load request. This class is used to load money into a user's account.
+
+ */
 public class LoadRequest {
-
-
-    /**
-     * {
-     *   "messageId": "55210c62-e480-asdf-bc1b-e991ac67FSAC",
-     *   "userId": "2226e2f9-ih09-46a8-958f-d659880asdfD",
-     *   "transactionAmount": {
-     *     "amount": "100.23",
-     *     "currency": "USD",
-     *     "debitOrCredit": "CREDIT"
-     *   }
-     * }
-     */
 
     private String messageId;
 
@@ -45,7 +36,5 @@ public class LoadRequest {
     public String getMessageId() {
         return messageId;
     }
-
-
 
 }

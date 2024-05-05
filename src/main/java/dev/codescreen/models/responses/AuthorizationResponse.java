@@ -6,6 +6,13 @@ import dev.codescreen.models.enums.ResponseCode;
  * A class that represents a response to an authorization request coming from a user
  */
 public class AuthorizationResponse extends AAuthorizationResponse {
+    private String userId;
+
+    private String messageId;
+
+    private ResponseCode responseCode;
+
+    private Amount balance;
 
     public AuthorizationResponse() {
 
@@ -48,14 +55,6 @@ public class AuthorizationResponse extends AAuthorizationResponse {
     public Amount getBalance() {
         return new Amount(balance.getAmount(), balance.getCurrency(), balance.getDebitOrCredit());
     }
-
-    private String userId;
-
-    private String messageId;
-
-    private ResponseCode responseCode;
-
-    private Amount balance;
 
     @Override
     public String toString() {
