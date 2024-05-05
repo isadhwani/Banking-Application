@@ -10,11 +10,11 @@ public class AuthorizationResponse {
     public AuthorizationResponse() {
 
     }
-    public AuthorizationResponse(String userId, String messageId, ResponseCode responseCode) {//, Amount balance) {
+    public AuthorizationResponse(String userId, String messageId, ResponseCode responseCode, Amount balance) {
         this.userId = userId;
         this.messageId = messageId;
         this.responseCode = responseCode;
-        //this.balance = balance;
+        this.balance = balance;
     }
 
     public void setUserId(String userId) {
@@ -29,9 +29,9 @@ public class AuthorizationResponse {
         this.responseCode = responseCode;
     }
 
-//    public void setBalance(Amount balance) {
-//        this.balance = balance;
-//    }
+    public void setBalance(Amount balance) {
+        this.balance = balance;
+    }
 
     public String getUserId() {
         return userId;
@@ -55,11 +55,11 @@ public class AuthorizationResponse {
 
     private ResponseCode responseCode;
 
-    //private Amount balance;
+    private Amount balance;
 
     @Override
     public String toString() {
-        return "AuthorizationResponse{" + "userId='" + userId + '\'' + ", messageId='" + messageId + '\'' + ", responseCode=" + responseCode;// + ", balance=" + balance + '}';
+        return "AuthorizationResponse{" + "userId='" + userId + '\'' + ", messageId='" + messageId + '\'' + ", responseCode=" + responseCode + ", balance=" + balance + '}';
     }
 
 }

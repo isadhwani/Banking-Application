@@ -35,7 +35,7 @@ public class User {
         balance -= creditAmount;
     }
 
-    public void debit(int debitAmount) {
+    public void debit(float debitAmount) {
         balance += debitAmount;
     }
 

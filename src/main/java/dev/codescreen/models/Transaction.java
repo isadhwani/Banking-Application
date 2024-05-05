@@ -1,6 +1,8 @@
 package dev.codescreen.models;
 
 //import dev.codescreen.models.responses.Amount;
+
+import dev.codescreen.models.responses.Amount;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -8,7 +10,7 @@ import jakarta.persistence.Id;
 public class Transaction {
 
 
-    public Transaction(String transactionId, String amount) { //}, Amount transactionAmount) {
+    public Transaction(String transactionId, String amount, Amount transactionAmount) {
         this.id = transactionId;
         this.amount = amount;
        // this.transactionAmount = transactionAmount;
@@ -23,6 +25,8 @@ public class Transaction {
     private String amount;
 
 //    private Amount transactionAmount;
+
+
 
     private String responseCode;
 

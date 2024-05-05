@@ -12,7 +12,9 @@ package dev.codescreen;
 //import org.springframework.beans.factory.annotation.Autowired;
 
 import dev.codescreen.models.requests.AuthorizationRequest;
+import dev.codescreen.models.requests.LoadRequest;
 import dev.codescreen.models.responses.AuthorizationResponse;
+import dev.codescreen.models.responses.LoadResponse;
 import dev.codescreen.models.responses.PingResponse;
 import dev.codescreen.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +52,10 @@ public class TransactionController {
         return ts.authorizeTransaction(authorizationRequest);
 
     }
-//
-//    @PutMapping("/load")
-//    public LoadResponse loadTransaction(@RequestBody LoadRequest loadRequest) {
-//        return ts.loadTransaction(loadRequest);
-//    }
+
+    @PutMapping("/load")
+    public LoadResponse loadTransaction(@RequestBody LoadRequest loadRequest) {
+        System.out.println("Loading transaction");
+        return ts.loadTransaction(loadRequest);
+    }
 }
