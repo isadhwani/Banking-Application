@@ -81,8 +81,9 @@ Third, the API spec does not specify how to handle a user trying to credit more 
 Fourth, the API spec does not specify how to handle a user trying to credit or debit a negative amount. I have chosen to create a custom error handling service that gives a 400 error code. 
 
 ## Assumptions
-I have assumed the program will be ran and tested locally. I have not implemented any CORs logic and expect requests to come from the same origin. There is also no security implemented in this service. 
+I assume the program will be ran and tested locally. I have not implemented any CORs logic and expect requests to come from the same origin. There is also no security implemented in this service. The size of the database will be limited and would need to be depoloyed seperatley to be brought up to scale. 
 
+I assume there are no  endpoints for this application other than the three specified in the spec
 ## Bonus: Deployment considerations
 To quickly make my API available to authorized users, I would host it on AWS. I would also use an AWS hosted PostGreSQL database rather than an in memory database.
 
