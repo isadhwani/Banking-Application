@@ -1,6 +1,5 @@
 package dev.codescreen.models.repositories;
 
-import dev.codescreen.models.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +10,16 @@ import java.util.Set;
 @Repository
 public class UserRepository implements CrudRepository<User, String> {
     Set<User> users = new HashSet();
+
+    @Override
+    public String toString() {
+        String ret = "[ ";
+        for (User u : users) {
+            ret += u.toString();
+        }
+        return ret + " ]";
+    }
+
     @Override
     public <S extends User> S save(S entity) {
         users.add(entity);
@@ -28,7 +37,7 @@ public class UserRepository implements CrudRepository<User, String> {
     @Override
     public Optional<User> findById(String id) {
         for (User u : users) {
-            if(u.getId().equals(id)) {
+            if (u.getId().equals(id)) {
                 return Optional.ofNullable(u);
             }
         }
@@ -64,7 +73,7 @@ public class UserRepository implements CrudRepository<User, String> {
     @Override
     public void deleteById(String id) {
         for (User u : users) {
-            if(u.getId().equals(id)) {
+            if (u.getId().equals(id)) {
                 users.remove(u);
             }
         }
@@ -74,7 +83,7 @@ public class UserRepository implements CrudRepository<User, String> {
     @Override
     public void delete(User entity) {
         for (User u : users) {
-            if(u.getId().equals(entity)) {
+            if (u.getId().equals(entity)) {
                 users.remove(u);
             }
         }

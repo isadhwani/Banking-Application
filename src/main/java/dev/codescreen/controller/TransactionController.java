@@ -1,4 +1,4 @@
-package dev.codescreen;
+package dev.codescreen.controller;
 //
 //import dev.models.Exceptions.UserNotFoundException;
 //import dev.models.Requests.AuthorizationRequest;
@@ -13,11 +13,13 @@ package dev.codescreen;
 
 import dev.codescreen.models.requests.AuthorizationRequest;
 import dev.codescreen.models.requests.LoadRequest;
-import dev.codescreen.models.responses.AuthorizationResponse;
-import dev.codescreen.models.responses.LoadResponse;
+import dev.codescreen.models.responses.AAuthorizationResponse;
+import dev.codescreen.models.responses.ALoadResponse;
 import dev.codescreen.models.responses.PingResponse;
 import dev.codescreen.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,29 +35,27 @@ public class TransactionController {
 
     @GetMapping("/ping")
     @CrossOrigin(origins = "http://localhost:8080")
-    public PingResponse ping() {
-        System.out.println("pinging...");
-        PingResponse p =  new PingResponse();
-        System.out.println(p.serverTime);
-        return p;
+    public ResponseEntity<PingResponse> ping() {
+        return new
+                ResponseEntity<>(new PingResponse(), HttpStatus.OK);
     }
 
     @GetMapping("/")
     @CrossOrigin(origins = "http://localhost:8080")
     public String welcome() {
-        return "Yello bud";
+        ts.printUsers();
+        return "Welcome to the transaction service";
     }
 
 
     @PutMapping("/authorization")
-    public AuthorizationResponse authorizeTransaction(@RequestBody AuthorizationRequest authorizationRequest) {
+    public ResponseEntity<AAuthorizationResponse> authorizeTransaction(@RequestBody AuthorizationRequest authorizationRequest)  {
         return ts.authorizeTransaction(authorizationRequest);
 
     }
 
     @PutMapping("/load")
-    public LoadResponse loadTransaction(@RequestBody LoadRequest loadRequest) {
-        System.out.println("Loading transaction");
+    public ResponseEntity<ALoadResponse> loadTransaction(@RequestBody LoadRequest loadRequest)  {
         return ts.loadTransaction(loadRequest);
     }
 }

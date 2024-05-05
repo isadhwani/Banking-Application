@@ -2,7 +2,7 @@ package dev.codescreen.models.responses;
 
 //import dev.codescreen.models.Amount;
 
-public class LoadResponse {
+public class LoadResponse extends ALoadResponse {
     /**
      * LoadResponse{
      * description:

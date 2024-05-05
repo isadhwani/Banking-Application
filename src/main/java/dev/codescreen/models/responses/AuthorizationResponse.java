@@ -1,11 +1,11 @@
 package dev.codescreen.models.responses;
 
-
-//import dev.codescreen.models.TransactionAmount;
-
 import dev.codescreen.models.enums.ResponseCode;
 
-public class AuthorizationResponse {
+/**
+ * A class that represents a response to an authorization request coming from a user
+ */
+public class AuthorizationResponse extends AAuthorizationResponse {
 
     public AuthorizationResponse() {
 
@@ -45,9 +45,9 @@ public class AuthorizationResponse {
         return responseCode;
     }
 
-//    public Amount getBalance() {
-//        return new Amount(balance.getAmount(), balance.getCurrency(), balance.getDebitOrCredit());
-//    }
+    public Amount getBalance() {
+        return new Amount(balance.getAmount(), balance.getCurrency(), balance.getDebitOrCredit());
+    }
 
     private String userId;
 

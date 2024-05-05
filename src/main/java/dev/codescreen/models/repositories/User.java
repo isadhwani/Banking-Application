@@ -1,4 +1,4 @@
-package dev.codescreen.models;
+package dev.codescreen.models.repositories;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -27,11 +27,11 @@ public class User {
         return balance;
     }
 
-    public boolean canCredit(int creditAmount) {
+    public boolean canCredit(float creditAmount) {
         return creditAmount <= balance;
     }
 
-    public void credit(int creditAmount) {
+    public void credit(float creditAmount) {
         balance -= creditAmount;
     }
 

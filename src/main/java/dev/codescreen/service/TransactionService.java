@@ -1,74 +1,104 @@
 package dev.codescreen.service;
 
-import dev.codescreen.DebitEvent;
-import dev.codescreen.EventProcessor;
-import dev.codescreen.models.User;
+import dev.codescreen.eventlog.CreditEvent;
+import dev.codescreen.eventlog.DebitEvent;
+import dev.codescreen.eventlog.Event;
+import dev.codescreen.eventlog.EventProcessor;
+import dev.codescreen.models.enums.DebitOrCredit;
 import dev.codescreen.models.enums.ResponseCode;
-import dev.codescreen.models.repositories.TransactionRepository;
+import dev.codescreen.models.repositories.User;
 import dev.codescreen.models.repositories.UserRepository;
 import dev.codescreen.models.requests.AuthorizationRequest;
 import dev.codescreen.models.requests.LoadRequest;
-import dev.codescreen.models.responses.AuthorizationResponse;
-import dev.codescreen.models.responses.LoadResponse;
+import dev.codescreen.models.responses.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service class that handles transaction requests, called from the controller
+ *      - UserRepository userRepository: Repository for Users using the banking system
+ *      - EventProcessor ep: Event processor to handle and log events
+ *
+ *      Note: If a request here contains a user ID that does not exist in the repository, a new user is created with a balance of 0
+ */
 @Service
 public class TransactionService {
     @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private UserRepository userRepository;
 
     EventProcessor ep = new EventProcessor();
 
 
-    public AuthorizationResponse authorizeTransaction(AuthorizationRequest req) {
-        int creditAmount = 0;
+    /**
+     * Constructor for TransactionService testing
+     * @param userRepository: Repository for Users using the banking system
+     */
+    public TransactionService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+
+    public ResponseEntity<AAuthorizationResponse> authorizeTransaction(AuthorizationRequest req) {
+        float creditAmount = 0;
         try {
-            creditAmount = Integer.parseInt(req.getTransactionAmount().getAmount());
+            creditAmount = Float.parseFloat(req.getTransactionAmount().getAmount());
+            if (creditAmount < 0) {
+                return new ResponseEntity(new AuthorizationResponseError("Credit amount cannot be negative", "400"), HttpStatus.BAD_REQUEST );
+            }
 
         } catch (NumberFormatException e) {
-            // return no such user error
-            throw e;
+            return new ResponseEntity(new AuthorizationResponseError("Credit amount not a number", "400"), HttpStatus.BAD_REQUEST );
+
         }
+
 
         Optional<User> optionalUser = userRepository.findById(req.getUserId());
         User user = optionalUser.isPresent() ? optionalUser.get() : new User(req.getUserId(), 0);
 
-        // throw new UserNotFoundException("User not found") ;//no such transaction error code...
-        // Instead of throwing an error, I'll create a new user with this ID as the API spec does not have an add user endpoint
 
-//        Transaction transaction = new Transaction(req.getMessageId(), req.getUserId(), req.getTransactionAmount());
-//        transactionRepository.save(transaction);
+        CreditEvent creditEvent = new CreditEvent(user, creditAmount);
+        ep.processEvent(creditEvent);
+        Event processedEvent = ep.getLatestEvent();
 
-        if (user.canCredit(creditAmount)) {
-            user.credit(creditAmount);
-            return new AuthorizationResponse(req.getUserId(), req.getMessageId(), ResponseCode.APPOROVED, req.getTransactionAmount());
-        }
-        return new AuthorizationResponse(req.getUserId(), req.getMessageId(), ResponseCode.DECLINDED, req.getTransactionAmount());
+        Amount balacne = new Amount(String.valueOf(user.getBalance()), "USD", DebitOrCredit.CREDIT);
+        AuthorizationResponse ar = new AuthorizationResponse(req.getUserId(), req.getMessageId(), processedEvent.getResponseCode(), balacne);
+        return new ResponseEntity<>(ar, HttpStatus.OK);
     }
 
 
-    public LoadResponse loadTransaction(LoadRequest loadRequest) {
+    public ResponseEntity<ALoadResponse> loadTransaction(LoadRequest loadRequest) {
         float debitAmount;
         try {
             debitAmount = Float.parseFloat(loadRequest.getTransactionAmount().getAmount());
+            if (debitAmount < 0) {
+                return new ResponseEntity(new LoadResponseError("Debit amount cannot be negative", "400"), HttpStatus.BAD_REQUEST );
+            }
         } catch (NumberFormatException e) {
-            // return no such user error
-            throw e;
+            return new ResponseEntity(new AuthorizationResponseError("Debit amount not a number", "400"), HttpStatus.BAD_REQUEST );
+
         }
 
         Optional<User> optionalUser = userRepository.findById(loadRequest.getUserId());
-        User user = optionalUser.isPresent() ? optionalUser.get() : new User(loadRequest.getUserId(), 0);
+        User user = optionalUser.orElseGet(() -> new User(loadRequest.getUserId(), 0));
+        userRepository.save(user);
 
-        DebitEvent debitEvent = new DebitEvent(user, debitAmount);
+        DebitEvent debitEvent = new DebitEvent(user, debitAmount, ResponseCode.APPOROVED);
         ep.processEvent(debitEvent);
 
-       // Amount amount = new Amount(String.valueOf(user.getBalance()), "USD", DebitOrCredit.DEBIT);
-        return new LoadResponse(loadRequest.getUserId(), loadRequest.getMessageId(), loadRequest.getTransactionAmount());
+        // Make note that the response object they want makes no sense. It should have a balance, but instead it wants a balance
+        // with a debit or credit flag and currency. Should this be the amount just added or total balance??? I'm assuming it's
+        // total balance with debit or credit falg of debit and USD currency.
+        Amount amount = new Amount(String.valueOf(user.getBalance()), "USD", DebitOrCredit.DEBIT);
+        LoadResponse lr = new LoadResponse(loadRequest.getUserId(), loadRequest.getMessageId(), amount);
+        return new ResponseEntity<>(lr, HttpStatus.OK);
+    }
+
+    public void printUsers() {
+        System.out.println(userRepository);
     }
 }

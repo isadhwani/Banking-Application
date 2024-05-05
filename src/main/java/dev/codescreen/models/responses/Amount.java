@@ -4,6 +4,10 @@ package dev.codescreen.models.responses;
 import dev.codescreen.models.enums.DebitOrCredit;
 
 
+/**
+ * Represents the amount of a transaction. with an amount, currency, and debit or credit.
+
+ */
 public class Amount {
     public Amount() {
     }
@@ -28,6 +32,27 @@ public class Amount {
 
     public DebitOrCredit getDebitOrCredit() {
         return debitOrCredit;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setDebitOrCredit(DebitOrCredit debitOrCredit) {
+        this.debitOrCredit = debitOrCredit;
+    }
+
+    @Override
+    public String toString() {
+        return "Amount{" +
+                "amount='" + amount + '\'' +
+                ", currency='" + currency + '\'' +
+                ", debitOrCredit=" + debitOrCredit +
+                '}';
     }
 
 }
