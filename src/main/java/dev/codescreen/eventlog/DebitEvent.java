@@ -20,7 +20,6 @@ public class DebitEvent implements Event {
 
     @Override
     public void process() {
-        System.out.println("Processing Debit Event");
         user.debit(amount);
     }
 
@@ -28,4 +27,14 @@ public class DebitEvent implements Event {
     public ResponseCode getResponseCode() {
         return responseCode;
     }
+
+
+    public User getUser() {
+        return new User(user);
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
 }

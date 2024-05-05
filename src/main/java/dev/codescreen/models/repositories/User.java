@@ -16,8 +16,13 @@ public class User {
 
     private float balance;
 
-    public User() {
-        // do some stuff
+    /**
+     * Copy constructor
+     * @param u - User to copy
+     */
+    public User(User u) {
+        this.id = u.id;
+        this.balance = u.balance;
     }
 
     public String getId() {

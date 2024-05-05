@@ -31,18 +31,43 @@ public class TransactionService {
 
     private UserRepository userRepository;
 
-    EventProcessor ep = new EventProcessor();
+    private EventProcessor ep;
 
+    /**
+     * Constructor for Autowiring when running the API
+     */
+    public TransactionService() {
+        this.ep = new EventProcessor();
+    }
 
     /**
      * Constructor for TransactionService testing
      * @param userRepository: Repository for Users using the banking system
+     *
      */
     public TransactionService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.ep = new EventProcessor();
+    }
+
+    /**
+     * Constructor for TransactionService testing
+     * @param userRepository: Repository for Users using the banking system
+     * @param ep: Event processor to handle and log events
+     */
+    public TransactionService(UserRepository userRepository, EventProcessor ep) {
+        this.userRepository = userRepository;
+        this.ep = ep;
     }
 
 
+
+    /**
+     * Authorize a transaction for a user, called from controller
+     * @param req: AuthorizationRequest object containing the user ID and transaction amount
+     * @return ResponseEntity<AAuthorizationResponse>: Response object containing the user ID, response code, and balance
+     * @return ResponseEntity<AuthorizationResponseError>: Response object containing an error message and status code
+     */
     public ResponseEntity<AAuthorizationResponse> authorizeTransaction(AuthorizationRequest req) {
         float creditAmount = 0;
         try {
@@ -66,11 +91,17 @@ public class TransactionService {
         Event processedEvent = ep.getLatestEvent();
 
         Amount balacne = new Amount(String.valueOf(user.getBalance()), "USD", DebitOrCredit.CREDIT);
-        AuthorizationResponse ar = new AuthorizationResponse(req.getUserId(), req.getMessageId(), processedEvent.getResponseCode(), balacne);
+        AuthorizationResponse ar = new AuthorizationResponse(req.getUserId(), processedEvent.getResponseCode(), balacne);
         return new ResponseEntity<>(ar, HttpStatus.OK);
     }
 
 
+    /**
+     * Load a transaction for a user, called from controller
+     * @param loadRequest: LoadRequest object containing the user ID and transaction amount
+     * @return ResponseEntity<ALoadResponse>: Response object containing the user ID and balance
+     * @return ResponseEntity<LoadResponseError>: Response object containing an error message and status code
+     */
     public ResponseEntity<ALoadResponse> loadTransaction(LoadRequest loadRequest) {
         float debitAmount;
         try {
@@ -94,10 +125,13 @@ public class TransactionService {
         // with a debit or credit flag and currency. Should this be the amount just added or total balance??? I'm assuming it's
         // total balance with debit or credit falg of debit and USD currency.
         Amount amount = new Amount(String.valueOf(user.getBalance()), "USD", DebitOrCredit.DEBIT);
-        LoadResponse lr = new LoadResponse(loadRequest.getUserId(), loadRequest.getMessageId(), amount);
+        LoadResponse lr = new LoadResponse(loadRequest.getUserId(), amount);
         return new ResponseEntity<>(lr, HttpStatus.OK);
     }
 
+    /**
+     * Print the users in the repository, used for visual testing
+     */
     public void printUsers() {
         System.out.println(userRepository);
     }

@@ -51,7 +51,7 @@ public class UserRepository implements CrudRepository<User, String> {
                 return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class UserRepository implements CrudRepository<User, String> {
     @Override
     public void delete(User entity) {
         for (User u : users) {
-            if (u.getId().equals(entity)) {
+            if (u.equals(entity)) {
                 users.remove(u);
             }
         }
@@ -92,13 +92,17 @@ public class UserRepository implements CrudRepository<User, String> {
 
     @Override
     public void deleteAllById(Iterable<? extends String> strs) {
-        // todo
+        for (String id : strs) {
+            users.removeIf(u -> u.getId().equals(id));
+        }
 
     }
 
     @Override
     public void deleteAll(Iterable<? extends User> entities) {
-        // todo
+        for (User u : entities) {
+            users.remove(u);
+        }
     }
 
     @Override

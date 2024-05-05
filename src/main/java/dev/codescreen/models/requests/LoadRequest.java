@@ -28,7 +28,7 @@ public class LoadRequest {
 
     }
 
-    LoadRequest(String messageId, String userId, Amount transactionAmount) {
+    public LoadRequest(String userId, String messageId,  Amount transactionAmount) {
         this.messageId = messageId;
         this.userId = userId;
         this.transactionAmount = transactionAmount;

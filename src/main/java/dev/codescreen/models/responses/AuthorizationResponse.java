@@ -10,9 +10,9 @@ public class AuthorizationResponse extends AAuthorizationResponse {
     public AuthorizationResponse() {
 
     }
-    public AuthorizationResponse(String userId, String messageId, ResponseCode responseCode, Amount balance) {
+    public AuthorizationResponse(String userId, ResponseCode responseCode, Amount balance) {
         this.userId = userId;
-        this.messageId = messageId;
+        this.messageId = java.util.UUID.randomUUID().toString();
         this.responseCode = responseCode;
         this.balance = balance;
     }

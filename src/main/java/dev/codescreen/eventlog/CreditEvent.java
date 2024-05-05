@@ -26,7 +26,6 @@ public class CreditEvent implements Event {
 
     @Override
     public void process() {
-        System.out.println("Processing Credit Event");
         if (responseCode == ResponseCode.APPOROVED)
             user.credit(amount);
     }

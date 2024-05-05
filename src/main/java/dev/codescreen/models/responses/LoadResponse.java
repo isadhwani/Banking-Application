@@ -2,6 +2,8 @@ package dev.codescreen.models.responses;
 
 //import dev.codescreen.models.Amount;
 
+import jakarta.persistence.GeneratedValue;
+
 public class LoadResponse extends ALoadResponse {
     /**
      * LoadResponse{
@@ -31,13 +33,14 @@ public class LoadResponse extends ALoadResponse {
      */
 
     private String userId;
+    @GeneratedValue
     private String messageId;
     private Amount balance;
 
-    public LoadResponse(String userId, String messageId, Amount balance) {
+    public LoadResponse(String userId, Amount balance) {
         this.userId = userId;
-        this.messageId = messageId;
         this.balance = balance;
+        messageId = java.util.UUID.randomUUID().toString();
     }
 
     public String getUserId() {
