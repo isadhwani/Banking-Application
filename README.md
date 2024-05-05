@@ -89,7 +89,7 @@ To quickly make my API available to authorized users, I would host it on AWS. I 
 
 I would deploy the aplication using AWS Elastic Beanstalk, which simplifies the provisioning and management of the infrastructure. I would create an Elastic Beanstalk environment configured with the appropriate runtime environment for Java, upload the applications JAR file, and let Elastic Beanstalk handle the deployment and scaling of the application.
 
-Additionally, I would set up an Application Load Balancer (ALB) to distribute incoming traffic across multiple EC2 instances running the API to ensure high availability and fault tolerance. The ALB would forward requests to the EC2 instances running the Spring Boot application.
+Additionally, I would set up an Application Load Balancer to distribute incoming traffic across multiple EC2 instances running the API to ensure high availability and fault tolerance. The ALB would forward requests to the EC2 instances running the Spring Boot application.
 
 For DNS configuration, I would create a Route 53 hosted zone, configure the necessary DNS records, and map the API endpoint to a DNS hostname.
 
