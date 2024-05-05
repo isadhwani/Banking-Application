@@ -46,7 +46,6 @@ public class TestTransactionService {
         assert (response.getStatusCode().equals(HttpStatus.OK));
 
         LoadResponse castedResponse = (LoadResponse) response.getBody();
-        System.out.println(castedResponse.getBalance().getAmount());
         assert (castedResponse.getBalance().getAmount().equals("100.0"));
         assert (castedResponse.getBalance().getCurrency().equals("USD"));
     }
@@ -65,7 +64,6 @@ public class TestTransactionService {
         assert (response.getStatusCode().equals(HttpStatus.OK));
 
         LoadResponse castedResponse = (LoadResponse) response.getBody();
-        System.out.println(castedResponse.getBalance().getAmount());
         assert (castedResponse.getBalance().getAmount().equals("100.0"));
         assert (castedResponse.getBalance().getCurrency().equals("USD"));
 
@@ -77,7 +75,6 @@ public class TestTransactionService {
         assert (response.getStatusCode().equals(HttpStatus.OK));
 
         AuthorizationResponse castedResponse2 = (AuthorizationResponse) response2.getBody();
-        System.out.println(castedResponse.getBalance().getAmount());
         assert (castedResponse2.getBalance().getAmount().equals("88.0"));
         assert (castedResponse2.getBalance().getCurrency().equals("USD"));
         assert (castedResponse2.getResponseCode().equals(ResponseCode.APPOROVED));
@@ -99,7 +96,6 @@ public class TestTransactionService {
         assert (response.getStatusCode().equals(HttpStatus.OK));
 
         LoadResponse castedResponse = (LoadResponse) response.getBody();
-        System.out.println(castedResponse.getBalance().getAmount());
         assert (castedResponse.getBalance().getAmount().equals("100.0"));
         assert (castedResponse.getBalance().getCurrency().equals("USD"));
 
@@ -111,7 +107,6 @@ public class TestTransactionService {
         assert (response.getStatusCode().equals(HttpStatus.OK));
 
         AuthorizationResponse castedResponse2 = (AuthorizationResponse) response2.getBody();
-        System.out.println(castedResponse.getBalance().getAmount());
         assert (castedResponse2.getBalance().getAmount().equals("100.0"));
         assert (castedResponse2.getBalance().getCurrency().equals("USD"));
         assert (castedResponse2.getResponseCode().equals(ResponseCode.DECLINDED));

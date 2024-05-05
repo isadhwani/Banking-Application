@@ -1,0 +1,11 @@
+curl --location --request PUT 'localhost:8080/load' \
+--header 'Content-Type: application/json' \
+--data '{
+  "messageId": "55210c62-e480-asdf-bc1b-e991ac67FSAC",
+  "userId": "1",
+  "transactionAmount": {
+    "amount": "9",
+    "currency": "USD",
+    "debitOrCredit": "DEBIT"
+  }
+}'

@@ -56,7 +56,6 @@ public class TestUserRepository {
     public void testExistsById() {
         User user = new User("1", 100);
         userRepository.save(user);
-        System.out.println(userRepository.count());
 
         assertTrue(userRepository.existsById("1"));
         assertFalse(userRepository.existsById("2"));
@@ -93,7 +92,6 @@ public class TestUserRepository {
         userRepository.save(user);
         userRepository.delete(user);
 
-        System.out.println(userRepository.count());
 
         assertFalse(userRepository.existsById("1"));
     }

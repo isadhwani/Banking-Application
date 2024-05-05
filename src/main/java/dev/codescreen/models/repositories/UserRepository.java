@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Repository
 public class UserRepository implements CrudRepository<User, String> {
-    Set<User> users = new HashSet();
+    Set<User> users = new HashSet<User>();
 
     @Override
     public String toString() {
@@ -61,8 +61,15 @@ public class UserRepository implements CrudRepository<User, String> {
 
     @Override
     public Iterable<User> findAllById(Iterable<String> strss) {
-        // todo
-        return null;
+        Set<User> ret = new HashSet<>();
+        for (String id : strss) {
+            for (User u : users) {
+                if (u.getId().equals(id)) {
+                    ret.add(u);
+                }
+            }
+        }
+        return ret;
     }
 
     @Override

@@ -121,9 +121,6 @@ public class TransactionService {
         DebitEvent debitEvent = new DebitEvent(user, debitAmount, ResponseCode.APPOROVED);
         ep.processEvent(debitEvent);
 
-        // Make note that the response object they want makes no sense. It should have a balance, but instead it wants a balance
-        // with a debit or credit flag and currency. Should this be the amount just added or total balance??? I'm assuming it's
-        // total balance with debit or credit falg of debit and USD currency.
         Amount amount = new Amount(String.valueOf(user.getBalance()), "USD", DebitOrCredit.DEBIT);
         LoadResponse lr = new LoadResponse(loadRequest.getUserId(), amount);
         return new ResponseEntity<>(lr, HttpStatus.OK);

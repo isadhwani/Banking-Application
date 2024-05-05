@@ -1,0 +1,13 @@
+curl -X 'PUT' \
+  'localhost:8080/authorization' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "messageId": "50e70c62-e480-49fc-bc1b-e991ac672173",
+  "userId": "8786e2f9-d472-46a8-958f-d659880e723d",
+  "transactionAmount": {
+    "amount": "9000",
+    "currency": "USD",
+    "debitOrCredit": "DEBIT"
+  }
+}'
